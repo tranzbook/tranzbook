@@ -19,11 +19,6 @@ import { Place, locations } from './locationConstants/Locations';
 interface ComboboxFormProps {
   onLocationSelect: (location: string) => void;
   disabledOptions?: string[]; // Array of options to disable
-}
-
-interface ComboboxFormProps {
-  onLocationSelect: (location: string) => void;
-  disabledOptions?: string[]; // Array of options to disable
   locationType: 'FROM' | 'TO'; // New prop to indicate the type of location
 }
 
@@ -46,15 +41,22 @@ export function ComboboxForm({ onLocationSelect, disabledOptions = [], locationT
     onLocationSelect(location); // Call the callback function with the name of the selected location
   };
 
-  // Dynamically determine the placeholder text based on the location type
-  const placeholder = locationType === 'FROM' ? 'From' : 'To';
+  // Set custom placeholders based on the location type
+  const placeholder =
+    locationType === 'FROM'
+      ? selectedLocation?.capital || 'Markola Accra'
+      : selectedLocation?.capital || 'Kejetia Market';
 
   return (
     <div className="flex items-center w-full space-x-4">
       <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
-          <div className="w-full ">
-          {selectedLocation ? <>{selectedLocation.capital}</> : <>{placeholder}</>}
+        <PopoverTrigger asChild>
+          <div className="w-full cursor-pointer">
+            {selectedLocation ? (
+              <>{selectedLocation.capital}</>
+            ) : (
+              <span className="text-gray-500">{placeholder}</span>
+            )}
           </div>
         </PopoverTrigger>
         <PopoverContent className="p-0 z-[99] bg-white text-[#fdb022] font-semibold" side="top" align="start">
